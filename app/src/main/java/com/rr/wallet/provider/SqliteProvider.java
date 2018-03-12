@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class SqliteProvider extends ContentProvider {
 
-    public static final String PROVIDER_NAME = "com.example.project.mydiary.provider.SqliteProvider";
+    public static final String PROVIDER_NAME = "com.rr.wallet.provider.SqliteProvider";
     private static final String PRODUCTS_TABLE = DbHelper.TABLE_EXPENSE;
     static final String URL = "content://" + PROVIDER_NAME + "/" + PRODUCTS_TABLE;
 

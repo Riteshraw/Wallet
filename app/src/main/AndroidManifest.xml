@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".provider.SqliteProvider"
+            android:authorities="com.rr.wallet.provider.SqliteProvider"
+            android:enabled="true"
+            android:exported="false"></provider>
+
     </application>
 
 </manifest>

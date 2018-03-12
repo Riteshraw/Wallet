@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.rr.wallet.dao.Entry;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ContentResolver myCR;
     private Context context;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +26,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = this;
+
+        initailiseViewControls();
+
         myCR = context.getContentResolver();
-        insertEntry();
+
+//        insertEntry();
 //        queryEntry("bank");
 //        deleteEntry("Bank");
 //        updateEntry("ICICI");
+    }
+
+    private void initailiseViewControls() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+        tabLayout=(TabLayout)findViewById(R.id.tabs);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
     }
 
     public void insertEntry() {
