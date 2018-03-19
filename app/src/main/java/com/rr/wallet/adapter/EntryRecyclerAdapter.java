@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 
 public class EntryRecyclerAdapter extends RecyclerView.Adapter<EntryViewHolder> {
-    private final ArrayList<Entry> entryArrayList;
+    private ArrayList<Entry> entryArrayList;
 
     public EntryRecyclerAdapter(ArrayList<Entry> entryArrayList) {
         this.entryArrayList = entryArrayList;

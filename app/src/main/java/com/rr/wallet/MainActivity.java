@@ -7,23 +7,42 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.rr.wallet.adapter.EntryRecyclerAdapter;
 import com.rr.wallet.dao.Entry;
 import com.rr.wallet.db.DbHelper;
+import com.rr.wallet.fragment.AddEntryDialogFragment;
 import com.rr.wallet.provider.SqliteProvider;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private ContentResolver myCR;
     private Context context;
     private TabLayout tabLayout;
+    private RecyclerView entry_recyclerView;
+    private ArrayList<Entry> entryArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        entryArrayList = new ArrayList<>();
+
+        for (int i = 0; i < 50; i++)
+            entryArrayList.add(new Entry("1", "To paytm for metro recharge", "500000", "500000", "500000"));
+
+        entry_recyclerView = (RecyclerView) findViewById(R.id.entry_recyclerView);
+        EntryRecyclerAdapter entryRecyclerAdapter = new EntryRecyclerAdapter(entryArrayList);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
+        entry_recyclerView.setLayoutManager(lm);
+        entry_recyclerView.setAdapter(entryRecyclerAdapter);
 
         context = this;
 
@@ -31,17 +50,22 @@ public class MainActivity extends AppCompatActivity {
 
         myCR = context.getContentResolver();
 
+
+
 //        insertEntry();
 //        queryEntry("bank");
 //        deleteEntry("Bank");
 //        updateEntry("ICICI");
+
+        AddEntryDialogFragment newFragment = new AddEntryDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
     private void initailiseViewControls() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        tabLayout=(TabLayout)findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
         tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
@@ -117,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(DbHelper.TYPE, "bank");
         values.put(DbHelper.DATE, "10/03/2018 05:30 PM");
 
-        int  rowsUpdated = myCR.update(
+        int rowsUpdated = myCR.update(
                 SqliteProvider.CONTENT_URI,
                 values,
                 selection,
