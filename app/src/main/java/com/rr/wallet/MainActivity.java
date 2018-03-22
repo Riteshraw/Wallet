@@ -6,13 +6,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.rr.wallet.adapter.EntryRecyclerAdapter;
+import com.rr.wallet.adapter.ViewPagerAdapter;
 import com.rr.wallet.dao.Entry;
 import com.rr.wallet.db.DbHelper;
 import com.rr.wallet.fragment.AddEntryDialogFragment;
@@ -20,56 +21,86 @@ import com.rr.wallet.provider.SqliteProvider;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
     private ContentResolver myCR;
     private Context context;
-    private TabLayout tabLayout;
-    private RecyclerView entry_recyclerView;
+    //    private TabLayout tabLayout;
+//    private RecyclerView entry_recyclerView;
     private ArrayList<Entry> entryArrayList;
+
+    @BindView(R.id.img_toolbar_add_entry)
+    ImageView img_toolbar_add_entry;
+    //    @BindView(R.id.entry_recyclerView)
+//    RecyclerView entry_recyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        entryArrayList = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++)
-            entryArrayList.add(new Entry("1", "To paytm for metro recharge", "500000", "500000", "500000"));
-
-        entry_recyclerView = (RecyclerView) findViewById(R.id.entry_recyclerView);
-        EntryRecyclerAdapter entryRecyclerAdapter = new EntryRecyclerAdapter(entryArrayList);
-        RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
-        entry_recyclerView.setLayoutManager(lm);
-        entry_recyclerView.setAdapter(entryRecyclerAdapter);
-
         context = this;
+        ButterKnife.bind(this);
 
-        initailiseViewControls();
+        initialiseViewControls();
 
         myCR = context.getContentResolver();
-
-
-
 //        insertEntry();
 //        queryEntry("bank");
 //        deleteEntry("Bank");
 //        updateEntry("ICICI");
 
-        AddEntryDialogFragment newFragment = new AddEntryDialogFragment();
-        newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    private void initailiseViewControls() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    private void initialiseViewControls() {
+/*        entryArrayList = new ArrayList<>();
+        for (int i = 0; i < 50; i++)
+            entryArrayList.add(new Entry("1", "To paytm for metro recharge", "500000", "500000", "500000"));
+
+//        entry_recyclerView = (RecyclerView) findViewById(R.id.entry_recyclerView);
+        EntryRecyclerAdapter entryRecyclerAdapter = new EntryRecyclerAdapter(entryArrayList);
+        RecyclerView.LayoutManager lm = new LinearLayoutManager(context);
+        entry_recyclerView.setLayoutManager(lm);
+        entry_recyclerView.setAdapter(entryRecyclerAdapter);*/
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+//        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("ICICI"));
+        tabLayout.addTab(tabLayout.newTab().setText("PAYTM"));
+        tabLayout.addTab(tabLayout.newTab().setText("WALLET"));
+
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    @OnClick(R.id.img_toolbar_add_entry)
+    void addEntry(View view) {
+        if (view.getId() == R.id.img_toolbar_add_entry) {
+            AddEntryDialogFragment newFragment = new AddEntryDialogFragment();
+            newFragment.show(getSupportFragmentManager(), "dialog");
+        }
+    }
+
+    @OnClick(R.id.img_toolbar_add_tab)
+    void addNewTab(View view) {
+        if (view.getId() == R.id.img_toolbar_add_tab) {
+            Toast.makeText(context, "Add new Tab", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void insertEntry() {

@@ -2,6 +2,7 @@ package com.rr.wallet.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rr.wallet.R;
@@ -20,10 +21,10 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     TextView txt_date;
     @BindView(R.id.txt_note)
     TextView txt_note;
-    @BindView(R.id.txt_debitAmount)
+    @BindView(R.id.txt_TransAmount)
     TextView txt_debitAmount;
-    @BindView(R.id.txt_creditAmount)
-    TextView txt_creditAmount;
+    @BindView(R.id.img_TransAmount)
+    ImageView img_TransAmount;
     @BindView(R.id.txt_balance)
     TextView txt_balance;
 

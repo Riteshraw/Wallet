@@ -1,6 +1,5 @@
 package com.rr.wallet.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ public class EntryRecyclerAdapter extends RecyclerView.Adapter<EntryViewHolder> 
     public EntryRecyclerAdapter(ArrayList<Entry> entryArrayList) {
         this.entryArrayList = entryArrayList;
     }
-
 
     @Override
     public EntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

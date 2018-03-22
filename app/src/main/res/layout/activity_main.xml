@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -14,25 +13,52 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="10dp"
             android:background="?attr/colorPrimary"
             android:gravity="center"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="Wallet" />
+            app:title="Wallet"
+            app:titleTextColor="@color/colorWhite">
+
+            <ImageView
+                android:id="@+id/img_toolbar_add_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@mipmap/icon_add_tab" />
+
+            <ImageView
+                android:id="@+id/img_toolbar_add_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_money_5" />
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabTextColor="@color/colorWhite" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/entry_recyclerView"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!--    <android.support.v7.widget.RecyclerView
+            android:id="@+id/entry_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
 
     <!--<android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -53,6 +79,5 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>-->
-
 
 </android.support.design.widget.CoordinatorLayout>
