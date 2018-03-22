@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.rr.wallet.R;
 
@@ -50,6 +52,15 @@ public class AddEntryDialogFragment extends AppCompatDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dialog_add_entry, container, false);
+
+
+        ((ImageView)v.findViewById(R.id.img_dialog_close)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+
         return v;
     }
 
