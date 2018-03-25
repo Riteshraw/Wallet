@@ -17,20 +17,29 @@ import java.util.HashMap;
 public class SqliteProvider extends ContentProvider {
 
     public static final String PROVIDER_NAME = "com.rr.wallet.provider.SqliteProvider";
-    private static final String PRODUCTS_TABLE = DbHelper.TABLE_EXPENSE;
-    static final String URL = "content://" + PROVIDER_NAME + "/" + PRODUCTS_TABLE;
+    private static final String TABLE_EXPENSE = DbHelper.TABLE_EXPENSE;
+    private static final String TABLE_TAB = DbHelper.TABLE_TAB;
+    static final String URL_EXPENSE = "content://" + PROVIDER_NAME + "/" + TABLE_EXPENSE;
+    static final String URL_TAB = "content://" + PROVIDER_NAME + "/" + TABLE_TAB;
 
-    public static final Uri CONTENT_URI = Uri.parse(URL);
+    public static final Uri CONTENT_URI_EXPENSE = Uri.parse(URL_EXPENSE);
+    public static final Uri CONTENT_URI_TAB = Uri.parse(URL_TAB);
 
     public static final int EXPENSE = 1;
     public static final int EXPENSE_ID = 2;
+    public static final int TAB = 3;
+    public static final int TAB_ID = 4;
 
     static final UriMatcher uriMatcher;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, PRODUCTS_TABLE, EXPENSE);
-        uriMatcher.addURI(PROVIDER_NAME, PRODUCTS_TABLE + "/#", EXPENSE_ID);
+
+        uriMatcher.addURI(PROVIDER_NAME, TABLE_EXPENSE, EXPENSE);
+        uriMatcher.addURI(PROVIDER_NAME, TABLE_EXPENSE + "/#", EXPENSE_ID);
+
+        uriMatcher.addURI(PROVIDER_NAME, TABLE_TAB, TAB);
+        uriMatcher.addURI(PROVIDER_NAME, TABLE_TAB + "/#", TAB_ID);
     }
 
     private static HashMap<String, String> values;
@@ -49,22 +58,30 @@ public class SqliteProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(DbHelper.TABLE_EXPENSE);
 
+        Cursor cursor;
         int uriType = uriMatcher.match(uri);
+        queryBuilder.setTables(DbHelper.TABLE_EXPENSE);
 
         switch (uriType) {
             case EXPENSE:
+                cursor = queryBuilder.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
                 break;
             case EXPENSE_ID:
                 queryBuilder.appendWhere(DbHelper.DATE + "=" + uri.getLastPathSegment());
+                cursor = queryBuilder.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+                break;
+            case TAB:
+                queryBuilder.setTables(DbHelper.TABLE_EXPENSE);
+                cursor = queryBuilder.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI");
         }
 
-        Cursor cursor = queryBuilder.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -86,6 +103,9 @@ public class SqliteProvider extends ContentProvider {
         switch (uriType) {
             case EXPENSE:
                 id = db.insert(DbHelper.TABLE_EXPENSE, null, contentValues);
+                break;
+            case TAB:
+                id = db.insert(DbHelper.TABLE_TAB, null, contentValues);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);

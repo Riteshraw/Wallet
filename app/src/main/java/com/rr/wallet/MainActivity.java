@@ -17,6 +17,7 @@ import com.rr.wallet.adapter.ViewPagerAdapter;
 import com.rr.wallet.dao.Entry;
 import com.rr.wallet.db.DbHelper;
 import com.rr.wallet.fragment.AddEntryDialogFragment;
+import com.rr.wallet.fragment.AddNewTabDialogFragment;
 import com.rr.wallet.provider.SqliteProvider;
 
 import java.util.ArrayList;
@@ -99,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.img_toolbar_add_tab)
     void addNewTab(View view) {
         if (view.getId() == R.id.img_toolbar_add_tab) {
-            Toast.makeText(context, "Add new Tab", Toast.LENGTH_SHORT).show();
+            AddNewTabDialogFragment newFragment = new AddNewTabDialogFragment();
+            newFragment.show(getSupportFragmentManager(), "dialog");
         }
     }
 
@@ -111,7 +113,16 @@ public class MainActivity extends AppCompatActivity {
         values.put(DbHelper.TYPE, "ICICI");
         values.put(DbHelper.DATE, "07/03/2018 05:27 PM");
 
-        myCR.insert(SqliteProvider.CONTENT_URI, values);
+        myCR.insert(SqliteProvider.CONTENT_URI_EXPENSE, values);
+    }
+
+    public void insertTab() {
+
+        ContentValues values = new ContentValues();
+        values.put(DbHelper.TYPE, "ICICI");
+        values.put(DbHelper.DATE, "07/03/2018 05:27 PM");
+
+        myCR.insert(SqliteProvider.CONTENT_URI_TAB, values);
     }
 
     public Entry queryEntry(String type) {
@@ -121,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         String selection = DbHelper.TYPE + " = \"" + type + "\"";
 
         Cursor cursor = myCR.query(
-                SqliteProvider.CONTENT_URI,
+                SqliteProvider.CONTENT_URI_EXPENSE,
                 projection,
                 selection,
                 null,
@@ -151,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
         String selection = DbHelper.TYPE + " = \"" + type + "\"";
 
-        int rowsDeleted = myCR.delete(SqliteProvider.CONTENT_URI, selection, null);
+        int rowsDeleted = myCR.delete(SqliteProvider.CONTENT_URI_EXPENSE, selection, null);
         Toast.makeText(context, "" + rowsDeleted, Toast.LENGTH_SHORT).show();
 
 //        if (rowsDeleted > 0)
@@ -173,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         values.put(DbHelper.DATE, "10/03/2018 05:30 PM");
 
         int rowsUpdated = myCR.update(
-                SqliteProvider.CONTENT_URI,
+                SqliteProvider.CONTENT_URI_EXPENSE,
                 values,
                 selection,
                 null

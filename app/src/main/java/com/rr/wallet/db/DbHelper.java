@@ -14,6 +14,7 @@ public class DbHelper extends SQLiteOpenHelper {
     static final String DATABASE_NAME = "MyDiary.db";
 
     public static final String TABLE_EXPENSE = "expense";
+    public static final String TABLE_TAB = "tab";
 
     public static final String ID = "ID";
     public static final String NOTE = "note";
@@ -28,6 +29,11 @@ public class DbHelper extends SQLiteOpenHelper {
             TYPE + " TEXT, " +
             DATE + " TEXT " + ")";
 
+    private static String CREATE_TABLE_TAB = "Create table " + TABLE_TAB + "( " +
+            ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TYPE + " TEXT, " +
+            DATE + " TEXT " + ")";
+
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -35,10 +41,12 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TABLE_EXPENSE);
+        sqLiteDatabase.execSQL(CREATE_TABLE_TAB);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TAB);
     }
 }
